@@ -1,0 +1,47 @@
+int A = 0; 
+int B = 0; 
+
+void setup() {
+  pinMode(2, INPUT);  // Botón A con resistencia externa
+  pinMode(3, INPUT);  // Botón B con resistencia externa
+
+  pinMode(6, OUTPUT);  // Resultado de SUMA
+  pinMode(7, OUTPUT);  // Resultado de RESTA
+  pinMode(8, OUTPUT);  // Resultado de MULTIPLICACIÓN
+  pinMode(9, OUTPUT);  // Resultado de DIVISIÓN
+
+  pinMode(10, OUTPUT); // Acarreo de SUMA
+  pinMode(11, OUTPUT); // Préstamo de RESTA
+  pinMode(12, OUTPUT); // Error en DIVISIÓN
+}
+
+void loop() {
+  A = digitalRead(2); // Leer botón A
+  B = digitalRead(3); // Leer botón B
+
+  // SUMA
+  int suma = A ^ B;  // XOR para la suma
+  int acarreo = A & B;  // AND para el acarreo
+
+  // RESTA
+  int resta = A ^ B;  // XOR para la diferencia
+  int prestamo = (!A) & B;  // Préstamo si A es 0 y B es 1
+
+  // MULTIPLICACIÓN
+  int multiplicacion = A & B;  // AND para la multiplicación
+
+  // DIVISIÓN
+  int division = (B == 0) ? 0 : A;  // Si B = 0, resultado es 0 (error)
+  int errorDiv = (B == 0) ? 1 : 0;  // Si B = 0, error activado
+
+  // Escribir en los pines de salida
+  digitalWrite(6, suma);
+  digitalWrite(10, acarreo);
+
+  digitalWrite(7, resta);
+  digitalWrite(11, prestamo);
+
+  digitalWrite(8, multiplicacion);
+
+  digitalWrite(9, division);
+  digitalWrite(12, errorDiv);
